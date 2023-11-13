@@ -1,0 +1,130 @@
+#include<stdio.h>
+int main()
+{
+        int ch;
+        while(1)
+        {
+                printf("\n1-SRTF SCHEDULING\n2-PREEMPTIVE PRIORITY SCHEDULING\n3-EXIT");
+                printf("\nENTER YOUR CHOICE:");
+                scanf("%d",&ch);
+                switch(ch)
+                {
+                   case 1:
+                      {
+                         int n,t,c=0,s;
+                         int pid[50],tat[50],at[50],bt[50],x[50],wt[50],com[50];
+                         double e;
+                         printf("ENTER THE NUMBER OF PROCESS:");
+                         scanf("%d",&n);
+                         for(int i=0;i<n;i++)
+                         {
+                            printf("ENTER THE BURST TIME OF p%d:",i+1);
+                            scanf("%d",&bt[i]);
+                            printf("ENTER THE ARRIVAL TIME OF p%d:",i+1);
+                            scanf("%d",&at[i]);
+                            pid[i]=i+1;
+                         }
+                         for(int i=0;i<n;i++)
+                         {
+                            x[i]=bt[i];
+                         }
+                         bt[9]=9999;
+                         for(t=0;c!=n;t++)
+                         {
+                            s=9;
+                            for(int i=0;i<n;i++)
+                            {
+                               if(at[i]<=t && bt[i]<bt[s] && bt[i]>0)
+                               {
+                                  s=i;
+                               }
+                            }
+                            bt[s]--;
+                            if(bt[s]==0)
+                            {
+                               c++;
+                               e=t+1;
+                               com[s]=e;
+                               wt[s]=e-at[s]-x[s];
+                               tat[s]=e-at[s];
+                               printf("\nPROCESS %d COMPLETED AT TIME %d",pid[s],tat[s]);
+                            }
+                         }
+                         printf("\nPROCESS ID\t\tBURST TIME\t\tWAITING TIME\t\tTURN AROUND TIME\n");
+                         float twt=0.0;
+                         float ta=0.0;
+                         for(int i=0;i<n;i++)
+                         {
+                            printf("%d\t\t\t%d\t\t\t%d\t\t\t%d\n",i+1,x[i],wt[i],tat[i]);
+                            twt+=wt[i];
+                            ta+=tat[i];
+                         }
+                         float att,awt;
+                         awt=twt/n;
+                         att=ta/n;
+                         printf("\nAVERAGE WAITING TIME:%f",awt);
+                         printf("\nAVERAGE TURN AROUND TIME:%f",att);
+
+                         break;
+                      }
+                   case 2:
+                      {
+                         int s,n,bt[50],at[50],temp[50],p[50],pid[50],t,count=0,wt[50],tat[50],total_wt=0,total_tat=0;
+                         printf("ENTER THE NUMBER OF PROCESS:");
+                         scanf("%d",&n);
+                        for(int i=0;i<n;i++)
+                        {
+                           printf("ENTER THE BURST TIME OF p%d:",i+1);
+                           scanf("%d",&bt[i]);
+                           printf("ENTER THE ARRIVAL TIME OF p%d:",i+1);
+                           scanf("%d",&at[i]);
+                           printf("ENTER THE PRIORITY OF p%d:",i+1);
+                           scanf("%d",&p[i]);
+                           pid[i]=i+1;
+                           temp[i]=bt[i];
+                        }
+                        p[9]=10000;
+                           for(t=0;count!=n;t++)
+                           {
+                              s=9;
+                              for(int i=0;i<n;i++)
+                              {
+                                 if(p[s]>p[i] && at[i]<=t && bt[i]>0)
+                                 {
+                                    s=i;
+                                 }
+                              }
+                              bt[s]=bt[s]-1;
+                              if(bt[s]==0)
+                              {
+                                 count++;
+                                 wt[s]=t+1-at[s]-temp[s];
+                                 tat[s]=t+1-at[s];
+                                 total_wt+=wt[s];
+                                 total_tat+=tat[s];
+                                 printf("\nPROCESS %d COMPLETED AT TIME %d\n",pid[s],tat[s]);
+
+                              }
+                           }
+
+                        float Avg_wt=float(total_wt/n);
+                        float Avg_tat=float(total_tat/n);
+                        printf("\nPROCESS\t\tBURST TIME\tWAITING TIME\tTURN AROUND TIME\tPRIORITY\n");
+                        for(int i=0;i<n;i++)
+                        {
+                           printf("\n%d\t\t%d\t\t%d\t\t%d\t\t\t%d\n",i+1,temp[i],wt[i],tat[i],p[i]);
+                        }
+                        printf("Avg waiting time of the process  is %f\n",Avg_wt);
+                        printf("Avg turn around time of the process is %f\n",Avg_tat);
+                        break;
+                      }
+                   case 3:
+                      {
+                        printf("EXIT");
+                        return 0;
+                        }
+                }
+        }
+        return 0;
+}
+
